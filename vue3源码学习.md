@@ -1,10 +1,10 @@
-克隆仓库
+克隆源码仓库
 
 ```shell
 git clone git@github.com:vuejs/core.git
 ```
 
-vue3的包管理器是`pnpm`
+vue3包管理器使用`pnpm`
 
 # pnpm
 
