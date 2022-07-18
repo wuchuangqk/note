@@ -1,4 +1,4 @@
-安装
+# 安装
 
 ```shell
 npm install vue-router@4
@@ -6,10 +6,10 @@ npm install vue-router@4
 
 
 
-导入新的api
+# 导入依赖
 
 ```typescript
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 ```
 
 
@@ -49,5 +49,31 @@ const interceptor = (to: RouteLocationNormalized, from: RouteLocationNorma
 
 // 注册全局路由拦截器
 router.beforeEach(interceptor)
+```
+
+
+
+```typescript
+const routes: RouteRecordRaw[] = [
+    { path: '/', component: () => import('@/views/index/index.vue') },
+    { path: '/detail/:id', component: () => import('@/views/search/detail.vue')},
+    {
+        path: '/user',
+        component: () => import('@/views/user/index.vue'),
+        children: [
+          { path: 'profile', component: () => import('@/views/user/profile/index.vue') },
+        ],
+        meta: { authentication: true },
+  	},
+];
+```
+
+# 在vue中安装
+
+```ty
+import { router } from '@/router'
+const app = createApp(App)
+app.use(router)
+app.mount('#app')
 ```
 
