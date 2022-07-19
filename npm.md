@@ -22,3 +22,29 @@ author | 作者名，还可以按以下格式添加邮箱和网站 `姓名 <emai
 npm init -y
 ```
 执行完命令后，npm会自动在项目目录下创建`package.json`
+
+# scope
+
+# 版本
+查看npm版本
+```cmd
+npm -v
+```
+升級npm到最新版本
+```cmd
+npm install npm@latest -g
+```
+
+# 发布
+- 登录npm账号(关掉梯子)
+```cmd
+npm login
+或
+npm login --registry https://registry.npmjs.org
+```
+username: `mzx_qk`  
+password: `passqk1050`  
+- 发布
+```cmd
+npm publish --registry https://registry.npmjs.org
+```
