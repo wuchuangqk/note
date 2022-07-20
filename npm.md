@@ -44,6 +44,7 @@ npm login --registry https://registry.npmjs.org
 ```
 username: `mzx_qk`  
 password: `passqk1050`  
+
 - 发布
 ```cmd
 npm publish --registry https://registry.npmjs.org
