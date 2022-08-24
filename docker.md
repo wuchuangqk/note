@@ -126,13 +126,8 @@ docker container run koa-demo:0.0.1
 
 
 
-## 对外暴露端口
-
-docker run  -p 1050:1050   -v D:\Programming\WorkSpace\Front Project\docker:/app --name pnpm node:16.16
+## 创建镜像和挂载本地目录
 
 ```sh
-docker run --name npm --net=host -p 1050:1050 -v D:\Programming\WorkSpace\'Front Project'\docker:/app node:16.16
-docker run -it --name learn_npm --net=host -v D:\Programming\WorkSpace\'Front Project'\docker:/app my_node_16_16:1.0.0
+docker run -it --name pnpm --net=host -v D:\Programming\WorkSpace\'Front Project'\docker:/app node:16.17.0
 ```
-
-D:\Programming\WorkSpace\Front Project\docker
