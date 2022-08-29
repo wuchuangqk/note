@@ -16,6 +16,9 @@
 -- | --
 description | 包的描述，便于在npm上被别人搜索
 author | 作者名，还可以按以下格式添加邮箱和网站 `姓名 <email@example.com> (http://example.com)`
+main | node环境的入口文件 
+module | 浏览器esm环境的入口文件 
+type |  
 
 # 初始化npm开发环境
 ```shell

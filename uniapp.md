@@ -36,14 +36,13 @@ onLoad和onReday只执行一次，onShow会执行多次。
   - 也就是说，调用了navigateBack，就表示这个页面要出栈
   - 特性：移除(remove)
 - redirectTo
-
+  - 特性：替换(replace)
   - 创建新节点追加到末尾，同时移动指针到这个新节点
   - 当前节点会被销毁，等于是把当前节点替换成了新节点
   - 同时具有：
     - navigateTo创建新节点的特性
     - navigateBack销毁自身的特性
 
-  - 特性：替换(replace)
 - reLaunch
   - 把现存的所有节点全部清空，然后指向创建的新节点
   - 新来的把所有人都赶跑，只留下自己一个人。
@@ -69,3 +68,44 @@ onLoad和onReday只执行一次，onShow会执行多次。
 - 列表页 navigateTo  列表页 navigateTo  列表页
   - navigateTo  会以自身为副本创建出新的副本
 
+
+
+# 页面传值
+
+## 下级页面向上级页面传值
+
+### 发布订阅
+
+`uni.$on` `uni.$emit`
+
+发布订阅的注意事项
+
+比如页面层级是：页面A -> 页面B -> 页面C
+
+在页面A和页面B的onLoad里都监听了'test'事件
+
+```
+// 页面A和页面B都监听test事件
+onLoad() {
+    uni.$on("test", (value) => {
+      console.log("页面A", value); // 页面A
+      // console.log("页面B", value); // 页面B
+    });
+  },
+```
+
+那么，当页面C触发'test'事件时，页面A、B都会监听到
+
+```
+// 页面C
+uni.$emit('test', 'dfsdfsdf')
+```
+
+控制台，页面A和B都打印了
+
+```
+页面A dfsdfsdf
+页面B dfsdfsdf
+```
+
+解决办法：上级页面生成唯一的eventName（随机数，时间戳等），作为参数传给下级页面。
