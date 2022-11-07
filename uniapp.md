@@ -109,3 +109,10 @@ uni.$emit('test', 'dfsdfsdf')
 ```
 
 解决办法：上级页面生成唯一的eventName（随机数，时间戳等），作为参数传给下级页面。
+
+# 隐藏原生tabbar
+
+```
+uni.hideTabbar()
+```
+

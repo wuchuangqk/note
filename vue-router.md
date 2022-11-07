@@ -4,15 +4,11 @@
 npm install vue-router@4
 ```
 
-
-
 # 导入依赖
 
 ```typescript
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 ```
-
-
 
 创建router，createRouter的参数里，history和routes必传。
 
@@ -27,8 +23,6 @@ export const router = createRouter({
     routes 
 })
 ```
-
-
 
 全局拦截器
 
@@ -50,8 +44,6 @@ const interceptor = (to: RouteLocationNormalized, from: RouteLocationNorma
 // 注册全局路由拦截器
 router.beforeEach(interceptor)
 ```
-
-
 
 ```typescript
 const routes: RouteRecordRaw[] = [
@@ -77,3 +69,6 @@ app.use(router)
 app.mount('#app')
 ```
 
+# path和fullPath的区别
+
+path只匹配route数组里定义的path，fullPath还包含查询字符串。例如http://192.168.3.20:8080/#/pages/pickup/pickup?scanType=2，path是/pages/pickup/pickup，fullPath是/pages/pickup/pickup?scanType=2

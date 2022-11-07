@@ -115,3 +115,4 @@ project-name
 ```
 
 虽然`pnpm add`是在lan-ui目录下执行的，但因为添加了`-w`参数，依赖包被安装到了`project-name`最顶层下，这样一来，packages下的所有模块和examples都可以共享到这些依赖，不用重复安装。
+

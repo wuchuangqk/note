@@ -53,6 +53,12 @@ password: `passqk1050`
 npm publish --registry https://registry.npmjs.org
 ```
 
+- 私有包(像@vue/pluin)，npm认为这种包是私有的，发布到平台时要加`--access=public`
+
+```
+npm publish --registry https://registry.npmjs.org --access=public
+```
+
 
 
 # 镜像

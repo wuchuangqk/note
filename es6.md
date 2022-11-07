@@ -148,7 +148,7 @@ example() // 两者相同
 
 ### 基本导入
 
-注意这里的大括号`{}`既不是对象，也是解构
+注意这里的大括号`{}`既不是对象，也不是解构
 
 ```js
 import { name, sai, Person } from './example.js'
