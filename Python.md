@@ -1,7 +1,7 @@
 # 要点
 
 - 变量名里不能有$，官方推荐用_下划线风格
-- len()获取字符串的长度，py的字符串没有length属性
+- 数组和字段串都用len()函数获取长度，python的数组和字符串没有length属性
 - +号的两边，类型必须一致，字符串不能和数字相加。类型转换：str(),int(),float()。int()只保留整数位会丢失小数位
 - input()得到的值始终是字符串(即使输入数字)
 - ==不会转换类型，'1'==1 是False
@@ -13,6 +13,10 @@
 - None，用法等同于js的null，但是不表示假值(False)。没有返回值的函数，默认的返回值是None
 - 函数的定义和调用，中间要空一行代码，不然会语法错误。
 - 在函数内修改全局变量，需要在变量名前加`global`关键字，否则python会把这个变量当局部变量处理。
+- 字符串是不可变的
+- type()方法可以查看变量是什么类型
+- python除法运算得到的结果都是float类型，不能用于数组下标。4 / 2 = 2.0
+- 字符串查找也用in 和 not in，字符串切片只有get没有set，给切片赋值会报错，切片不能访问不存在的索引
 
 # 异常处理
 
@@ -25,6 +29,119 @@ except Exception as e:
 ```
 
 # 文件读写
+
+## os模块
+
+```python
+import os
+```
+
+
+
+文件路径拼接，Windows和Linux的路径分隔符不一样。
+
+```python
+os.path.join('usr','bin','span')
+# Windows 'usr\\bin\\span'
+# Linux 'use/bin/span'
+```
+
+
+
+获取当前所在目录路径，cwd "current work directory"（当前工作目录）
+
+```python
+os.getcwd()
+# 'D:\\Program Files\\Python311'
+```
+
+
+
+创建文件夹，os.makedirs()
+
+```python
+os.makedirs('fold1/fold2/fold3')
+# 将依次创建 fold1 fold2 fold3 目录
+```
+
+
+
+列出目录下所有文件， os.listdir()
+
+```python
+os.listdir(':\\Users')
+```
+
+
+
+文件或目录重命名, os.rename(src, dst)。src要修改的文件或目录名，dst修改后的目录名
+
+```py
+import os
+
+def re_name(path):
+    for file in os.listdir(path):
+        file_path = os.path.join(path, file)
+        # 判断这个文件是否是文件夹，是文件夹的话就调用自己，把路径拼接好传过去
+        if os.path.isdir(file_path):
+            re_name(file_path)
+        else:  # 如果不是文件夹，就开始改名字
+            if "i.cnblogs .com" in file:
+                file_new = file.replace("i.cnblogs.com", "")
+                file_new_path = os.path.join(path, file_new)
+                os.rename(file_path, file_new_path)
+
+if __name__ == "__main__":
+    path = r'F:\\BaiduNetdiskDownload\\'
+    re_name(path)
+
+```
+
+
+
+
+
+## os.path模块
+
+```python
+from os import path
+```
+
+判断是否是文件，path.isfile()
+
+```py
+path.isfile('猜数字.py')
+# 参数必须是相对路径或绝对路径
+```
+
+
+
+## open
+
+读取一个文件，参数：文件路径，模式，可选参数：encoding(编码)。模式：r只读，w写入(覆盖)，a写入(追加)。r=read,w=write,a=append。使用后要记得调用close()关闭文件流。以写入模式打开的文件，不存在时会自动创建
+
+```python
+# hello.txt
+hello world
+
+# 只读
+text_file = open('hello.txt', 'r', encoding='utf-8')
+text_file.read()
+# hello world
+
+# 覆盖写入
+text_file = open('hello.txt', 'w', encoding='utf-8')
+text_file.write('new content')
+# hello.txt new content
+
+# 追加写入
+text_file = open('hello.txt', 'a', encoding='utf-8')
+text_file.write(' new content')
+# hello.txt hello world new content
+
+```
+
+
 
 
 
@@ -45,7 +162,6 @@ with open(path, 'r', encoding='utf-8') as f:
 - `path`文件路径，可以是相对路径或绝对路径
 - `'r'`读取模式，r=只读，w=可以写入
 - `encoding`指定编码，防止出现中文乱码
-  
 ## 读取json
 ```python
 #导入json模块
@@ -132,76 +248,131 @@ stu = ['tom', 'jack', 'lily']
 True
 ```
 
+数组排序，`sort()`，只能对**纯数字数组**或**纯字符串数组**使用sort，不能混杂数字和字符串。sort会改变原数组。默认升序，可以传入**reverse=True**来降序排序。
+
+```python
+arr = [2, 5, 3.14, 1, -7]
+arr.sort()
+# [-7, 1, 2, 3.14, 5]
+```
 
 
 
+| 方法                                      | 示例                                               | 备注                         |
+| ----------------------------------------- | -------------------------------------------------- | ---------------------------- |
+| list.index(el) 查找元素在数组中的下标     | ['a','b','c'].index('a')，输出 0                   | 不存在会抛出异常而不是返回-1 |
+| list.append(el) 追加元素到数组末尾        | ['a','b','c'].append('d')，输出['a','b','c','d']   |                              |
+| list.insert(index, el) 在指定位置插入元素 | ['a','b','c'].insert(1,'d')，输出['a','d','b','c'] |                              |
+| list.remove(el) 删除数组里的元素          | ['a','b','c'].remove('a')，输出['b','c']           | 删除不存在的元素会抛出异常   |
 
-
-
-
-
-
-- list和js的数组一样，用下标操作元素
-- `len()`list的长度
-- `pop()`删除并返回最后一个元素，可以指定删除的下标`pop(i)`
-- `append()`追加元素  
-
-|表达式|结果|描述|
-|----|----|----|
-|len([1, 2, 3])|3|长度|
-|[1, 2, 3] + [4, 5, 6]|[1, 2, 3, 4, 5, 6]|组合|
-|['Hi!'] * 4|['Hi!', 'Hi!', 'Hi!', 'Hi!']|重复|
-|3 in [1, 2, 3]|True|元素是否存在于列表中|
-|for x in [1, 2, 3]: print x|1 2 3|迭代|
 
 ## 元组tuple
-元组和list的唯一区别是元组长度不可变，没有append,insert方法
+元组和list的区别是元组长度不可变，所以元组没有append、insert、remove等方法
 ```python
 #定义元组(多个元素)
 tup = (1,2,3)
 #单个元素（后面必须加逗号）
 tup = (1,)
-#元组转list
-tup_list = list(tup)
 ```
+
+元组转换成list
+
+```python
+tup = (1, 2, 3)
+arr = list(tup)
+# [1, 2, 3]
+```
+
+
+
+
 
 ## 字典dict
-字典是键值对，对应JavaScript的对象类型。字典的键只能字符串，没有类似JavaScript map的get set方法，取值用`dict['key']`,添加新值和JavaScript对象动态追加属性一样，`dict['newKey']=''`
-```python
-# 遍历key (a = {'a': '1', 'b': '2', 'c': '3'})
-for key in a:
-       print(key+':'+a[key])
 
-#遍历key
->>> for key in a.keys():
-       print(key+':'+a[key])
-a:1
-b:2
-c:3
+定义一个字典，字典的key可以用字符串或数字类型
 
-#遍历value
->>> for value in a.values():
-       print(value)
-1
-2
-3
+```py
+dict = {'name': '张三', 1: 12}
+name = dict['name']
+age = dict[1]
+```
 
-#遍历键值
->>> for key,value in a.items():
-       print(key+':'+value)
-a:1
-b:2
-c:3
+用`in`和`not in`判断键名或值在不在字典中，访问不存在的键名时会抛出错误
 
-#遍历Item
->>> for kv in a.items():
-       print(kv)
-('a', '1')
-('b', '2')
-('c', '3')
+```py
+dict = {'name': '张三', 'age': 14}
+'birthday' in dict.keys() # False
+'age' not in dict.keys() # False
+'张三' in dict.values() # True
+```
+
+keys()、values()和 items()。注意：这三个方法返回的不是真正的数组，需要用list()转换，但for循环可以直接使用
+
+```py
+dict = {'a': 1, 'b': 2}
+dict.keys()
+# dict_keys(['a', 'b'])
+dict.values()
+# dict_values([1, 2])
+dict.items()
+# dict_items([('a', 1), ('b', 2)])
+```
+
+遍历字典，items()列表里的是一个元组
+
+```py
+dict = {'name': '张三', 'age': 14}
+for key in dict.keys():
+  print(key)
+# name age
+for value in dict.values():
+  print(value)
+# 张三 14
+for item in dict.items():
+  print(item, len(item), item[0],item[1])
+# ('name', '张三') 2 name 张三	 ('age', 14) 2 age 14
+```
+
+用`get()`设置备用值，当访问不存在的键时，get的第二个参数会被返回
+
+```py
+dict = {'name': '张三', 'age': 14}
+birthday = dict.get('birthday', '2020-10-11')
+# 2020-10-11
+```
+
+`setdefault()`，为了防止添加键时，覆盖之前的键，可以用setdefault()来简化操作，不用加in keys判断
+
+```py
+dict = {'name': '张三', 'age': 14}
+print(dict.setdefault('name', 'aaaa')) # 当键名存在时，返回对应的值
+# 张三
+print(dict.setdefault('name1', 'aaaa')) # 当键名不存在时，返回设置的值
+# aaaa
+
 ```
 
 
+
+
+
+## 列表、元组、字典之间的转换
+
+列表转元组 `tuple()`
+
+```python
+arr = [1, 2, 3]
+tul = tuple(arr)
+# (1, 2, 3)
+```
+
+元组转列表 `list()`
+
+```python
+tul = (1, 2, 3)
+arr = list(tul)
+# [1, 2, 3]
+```
 
 
 
@@ -264,4 +435,40 @@ random.randint(1, 10)，这句代码的意思是，使用random模块下的randi
 ```py
 from os import path, name
 ```
+
+
+
+# 标准库
+
+## copy
+
+```py
+from copy import copy, deepcopy
+```
+
+浅拷贝copy()，深拷贝deepcopy()，deepcopy用来列表中嵌套列表的qing'k
+
+```python
+arr = [1, 2, 3]
+arr2 = copy(arr)
+arr2.append(4)
+# arr: [1, 2, 3]
+# arr2: [1, 2, 3, 4]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
