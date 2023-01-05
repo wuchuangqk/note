@@ -17,6 +17,7 @@
 - type()方法可以查看变量是什么类型
 - python除法运算得到的结果都是float类型，不能用于数组下标。4 / 2 = 2.0
 - 字符串查找也用in 和 not in，字符串切片只有get没有set，给切片赋值会报错，切片不能访问不存在的索引
+- 在字符串前加一个小写的`r`，表示将字符串看作是原始字符串，原始字符串会将转义字符看作为普通字符。例如 r'你\n好'会输出 你\n好，这里的\n不再有换行效果。
 
 # 异常处理
 
@@ -36,26 +37,12 @@ except Exception as e:
 import os
 ```
 
-
-
-文件路径拼接，Windows和Linux的路径分隔符不一样。
-
-```python
-os.path.join('usr','bin','span')
-# Windows 'usr\\bin\\span'
-# Linux 'use/bin/span'
-```
-
-
-
 获取当前所在目录路径，cwd "current work directory"（当前工作目录）
 
 ```python
 os.getcwd()
 # 'D:\\Program Files\\Python311'
 ```
-
-
 
 创建文件夹，os.makedirs()
 
@@ -64,15 +51,11 @@ os.makedirs('fold1/fold2/fold3')
 # 将依次创建 fold1 fold2 fold3 目录
 ```
 
-
-
 列出目录下所有文件， os.listdir()
 
 ```python
-os.listdir(':\\Users')
+os.listdir('C:\\Users')
 ```
-
-
 
 文件或目录重命名, os.rename(src, dst)。src要修改的文件或目录名，dst修改后的目录名
 
@@ -97,6 +80,19 @@ if __name__ == "__main__":
 
 ```
 
+删除文件，参数是绝对路径
+
+```py
+os.remove(file)
+```
+
+删除文件夹
+
+```py
+os.rmdir() # 只能删除空文件夹
+os.removedirs() # 递归删除所有的文件和文件夹
+```
+
 
 
 
@@ -113,6 +109,53 @@ from os import path
 path.isfile('猜数字.py')
 # 参数必须是相对路径或绝对路径
 ```
+
+文件路径拼接，Windows和Linux的路径分隔符不一样。
+
+```python
+os.path.join('usr','bin','span')
+# Windows 'usr\\bin\\span'
+# Linux 'use/bin/span'
+```
+
+
+
+## shutil模块
+
+shutil主要用来复制、移动文件和文件夹
+
+```py
+import shutil
+```
+
+复制文件，返回复制后的路径。注意：1.文件已存在会报错 2.目录要提前创建好
+
+```py
+shutil.copy('C:\\spam.txt', 'C:\\delicious')
+# 'C:\\delicious\\spam.txt'
+shutil.copy('eggs.txt', 'C:\\delicious\\eggs2.txt')
+# 'C:\\delicious\\eggs2.txt'
+```
+
+复制文件夹，copytree会复制所有的文件和子文件夹（递归复制）。src必须是目录，dst不存在会自动创建
+
+```py
+# copytree(src, dst)
+shutil.copytree('C:\\bacon', 'C:\\bacon_backup')
+# 'C:\\bacon_backup'
+```
+
+移动文件
+
+```py
+shutil.move('C:\\bacon.txt', 'C:\\eggs')
+# 'C:\\eggs\\bacon.txt'
+```
+
+- 覆盖已有文件：如果c:\\eggs下已经有bacon.txt，就会被**覆盖**。要注意这点。
+- 移动同时重命名：如果目录路径是c:\\\eggs\\new_bacon.txt，那么文件在移动到c:\\eggs后，会改名为new_bacon.txt
+- 目标目录必须存在
+- 如果c:\\\下没有eggs文件夹，py会当成移动且重命名操作，最后bacon.txt被重命名为eggs的文件
 
 
 
@@ -141,9 +184,12 @@ text_file.write(' new content')
 
 ```
 
+使用with语句自动关闭文件流，在with结构里声明的变量，在外面可以访问到
 
-
-
+```py
+with open('hello.txt', 'r', encoding='utf-8') as file:
+  file.read()
+```
 
 
 
@@ -152,26 +198,6 @@ text_file.write(' new content')
 
 
 
-
-# python读文件：
-```python
-with open(path, 'r', encoding='utf-8') as f:
-```
-- `open()`读取文件返回文件流
-- `with`和其他语言一样，文件流需要关闭，通常为了处理处理异常还要写try catch finaly语句，加上with,python会自动处理文件流关闭
-- `path`文件路径，可以是相对路径或绝对路径
-- `'r'`读取模式，r=只读，w=可以写入
-- `encoding`指定编码，防止出现中文乱码
-## 读取json
-```python
-#导入json模块
-import json
-with open('./score.json', 'r', encoding='utf-8') as file:
-    #调用load方法，传入文件流参数
-     userData = json.load(file)
-```
-- python没有对象，所以把json数据对象转成dict字典结构
-- 使用从json读取的对象，要用`json['field']`语法格式
 
 # 数据类型
 ## 数组list
@@ -458,9 +484,133 @@ arr2.append(4)
 
 
 
+## json
+
+```py
+import json
+```
+
+读取json文件，返回字典或列表（对应json的两种格式，{ }和[ ]）
+
+```python
+data = json.load(file)
+```
+
+```py
+# obj.json
+{
+  "name": "张三"
+}
+# arr.json
+[
+  {
+    "name": "张三"
+  }
+]
+import json, os
+
+base = os.getcwd()
+for name in os.listdir():
+    if name.endswith('.json'):
+        with open(os.path.join(base, name), 'r', encoding='utf-8') as f:
+            data = json.load(f)
+            print(data, type(data))
+            
+# {'name': '张三'} <class 'dict'>
+# [{'name': '张三'}] <class 'list'>
+```
+
+把json写入进文件，json.dump()，设置indent参数会自动格式化写入后的样式
+
+```py
+dict = {'age': 12}
+with open('age.json', 'w') as f:
+    json.dump(dict, f, indent=2)
+```
 
 
 
+## zipfile
+
+查看、压缩、解压zip文件
+
+```py
+import zipfile
+```
+
+创建压缩文件，注意要添加第二个参数 w，用write()写入要压缩的文件，最后调用close()
+
+```py
+new_zip = zipfile.ZipFile('新建压缩文件.zip', 'w')
+new_zip.write('a.json', compress_type=zipfile.ZIP_DEFLATED)
+new_zip.close()
+```
+
+- 如果要向现有压缩文件里追加文件，可以使用`a`作为第二个参数
+- compress_type指定压缩算法，推荐用ZIP_DEFLATED
+- 多次调用write()可以写入多个文件
+- 如果向write()传入文件夹目录，会递归压缩文件夹内的所有文件
+
+查看压缩文件，namelist()获取压缩文件里有哪些文件，getinfo()查看文件的详细信息
+
+```py
+zip = zipfile.ZipFile('新建压缩文件1.zip')
+names = zip.namelist()
+print(names)
+# ['a.json', 'b.txt']
+info = zip.getinfo(names[0])
+print(info)
+# <ZipInfo filename='a.json' compress_type=deflate filemode='-rw-rw-rw-' file_size=14 compress_size=16>
+# info.filename
+# info.file_size
+# ……
+zip.close()
+```
+
+解压zip
+
+```py
+zip = zipfile.ZipFile('新建压缩文件.zip')
+zip.extractall('result')
+zip.extract('spam.txt', 'C:\\some\\new\\folders')
+zip.close()
+```
+
+- extractall() 解压全部文件，默认解压到当前目录。可以指定解压的目录，不存在时自动创建
+- extract() 解压单个文件，默认解压到当前目录。可以指定解压的目录，不存在时自动创建
+
+# pip
+
+安装一个模块，模板会被安装到全局，下个项目就不用再次安装了
+
+```shell
+pip install 模块名称
+```
+
+linux下pip要单独安装，且名称是`pip3`
+
+```sh
+sudo pip3 install 模块名称
+```
+
+更新模块
+
+```shell
+pip install -U 模块名称
+```
+
+
+
+# 运行程序
+
+py文件的第一行应该是`#!`，例如\#! /usr/bin/python3，这句话的意思是让操作系统知道用什么程序来运行这个脚本
+
+```py
+windows
+#! python3
+linux
+#! /usr/bin/python3
+```
 
 
 
