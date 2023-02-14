@@ -72,3 +72,11 @@ app.mount('#app')
 # path和fullPath的区别
 
 path只匹配route数组里定义的path，fullPath还包含查询字符串。例如http://192.168.3.20:8080/#/pages/pickup/pickup?scanType=2，path是/pages/pickup/pickup，fullPath是/pages/pickup/pickup?scanType=2
+
+
+
+
+
+
+
+![image-20230106152225179](./assets/vue-router/image-20230106152225179.png)

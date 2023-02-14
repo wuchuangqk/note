@@ -97,3 +97,7 @@ try_files $uri $uri/ /index.html 配置解释：$uri是Nginx的变量，代表�
 
 
 
+# windows下启动nginx为什么有两个nginx.exe进程
+
+一个是master进程，为主进程，用于控制nginx各个进程之间的协调工作关系
+另一个是worker进程，用于处理用户的请求
