@@ -599,7 +599,32 @@ sudo pip3 install 模块名称
 pip install -U 模块名称
 ```
 
+查看已安装的库
 
+```powershell
+pip list
+```
+
+> Package            Version
+> ------------------ ---------
+> certifi            2022.12.7
+> charset-normalizer 2.1.1
+> click              8.1.3
+> colorama           0.4.6
+> Flask              2.2.2
+> Flask-Cors         3.0.10
+> idna               3.4
+> itsdangerous       2.1.2
+> Jinja2             3.1.2
+> MarkupSafe         2.1.1
+> pip                22.3
+> pyperclip          1.8.2
+> requests           2.28.1
+> setuptools         65.5.0
+> six                1.16.0
+> urllib3            1.26.13
+> Werkzeug           2.2.2
+> yapf               0.32.0
 
 # 运行程序
 
