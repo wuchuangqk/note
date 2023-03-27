@@ -579,6 +579,22 @@ zip.close()
 - extractall() 解压全部文件，默认解压到当前目录。可以指定解压的目录，不存在时自动创建
 - extract() 解压单个文件，默认解压到当前目录。可以指定解压的目录，不存在时自动创建
 
+## time
+
+```python
+import time
+```
+
+获取代码执行用时
+
+```python
+start_time = time.time()
+end_time = time.time()
+print('程序用时%s秒' % (round(end_time - start_time, 2)))
+```
+
+
+
 # pip
 
 安装一个模块，模板会被安装到全局，下个项目就不用再次安装了

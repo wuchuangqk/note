@@ -7,29 +7,27 @@ node、npm、yarn的版本管理工具
 
 # 安装node
 
-- 不指定版本，默认安装最新版
-- 只指定主版本号，默认安装主版本下的最新版
-- 指定完整版本号
-
-## node16
+语法
 
 ```sh
-volta install node@16
+volta install node@version
 ```
 
-- node版本：v12.22.12
-- npm版本：6.14.16
+version:
 
-## node12
-
-```sh
-volta install node@12
-```
-
-- node版本：v16.17.0
-- npm版本：8.15.0
+- 不指定版本，默认安装最新版 `volta install node`
+- 只指定主版本号，默认安装主版本下的最新版 `volta install node@14`
+- 指定完整版本号 `volta install node@16.17.0`
 
 
+
+# 已安装的node版本
+
+| node      | npm     |
+| --------- | ------- |
+| v18.15.0  | 9.5.0   |
+| v16.17.0  | 8.15.0  |
+| v12.22.12 | 6.14.16 |
 
 # 命令
 
@@ -52,20 +50,45 @@ volta list
 volta list all
 ```
 
+```
+⚡️ User toolchain:
+
+    Node runtimes:
+        v12.22.12
+        v16.17.0
+        v18.15.0 (default)
+
+    Package managers:
+        npm:
+            v8.15.0
+        Yarn:
+            v1.22.19 (default)
+```
 
 
-# 为项目单独指定node版本
 
-npm init -y 创建package.json
+# pin
 
-然后
+使用pin命令为项目指定node和npm的版本，volta会把版本信息写进package.json
 
 ```sh
 volta pin node@16.17.0
+```
+
+```sh
 volta pin npm@8.15.0
 ```
 
-volta会把node版本写进package.json
+
+
+package.json
+
+```json
+"volta": {
+  "node": "16.17.0",
+  "npm": "8.15.0"
+}
+```
 
 此时，在项目路径下查看node版本是v16.17.0，而在其他地方查看node版本是v12.22.12
 

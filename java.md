@@ -204,15 +204,6 @@ StringBuilder：可变字符序列、效率高、线程不安全；
 pom坐标
 
 ```xml
-<parent>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-starter-parent</artifactId>
-  <version>3.0.4</version>
-  <relativePath/> <!-- lookup parent from repository -->
-</parent>
-```
-
-```xml
 <dependency>
   <groupId>org.springframework.boot</groupId>
   <artifactId>spring-boot-starter-security</artifactId>
@@ -288,7 +279,7 @@ springboot3.0.4默认采用的连接池是HikariCP
 spring:
   datasource:
       type: com.zaxxer.hikari.HikariDataSource
-      #高版本 Mysql 驱动时，配置的 driver-class-name 不再是 com.mysql.jdbc.Driver，url 后面必须设置时区 serverTimezone
+      # 高版本 Mysql 驱动时，配置的 driver-class-name 不再是 com.mysql.jdbc.Driver，url 后面必须设置时区 serverTimezone
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/dbys?serverTimezone=UTC&characterEncoding=utf8
       username: root
