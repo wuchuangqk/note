@@ -31,6 +31,92 @@ except Exception as e:
 
 # 文件读写
 
+## open
+
+读取一个文件，参数：文件路径，模式，可选参数：encoding(编码)。模式：r只读，w写入(覆盖)，a写入(追加)。r=read,w=write,a=append。使用后要记得调用close()关闭文件流。以写入模式打开的文件，不存在时会自动创建
+
+```python
+open(path, mode='r')
+```
+
+- path 绝对路径和相对路径
+
+- mode 读取模式，默认只读。
+
+  | 字符  | 含意                                       |
+  | :---- | :----------------------------------------- |
+  | `'r'` | 读取（默认）                               |
+  | `'w'` | 写入，并先截断文件                         |
+  | `'x'` | 排它性创建，如果文件已存在则失败           |
+  | `'a'` | 打开文件用于写入，如果文件存在则在末尾追加 |
+  | `'b'` | 二进制模式                                 |
+  | `'t'` | 文本模式（默认）                           |
+  | `'+'` | 打开用于更新（读取与写入）                 |
+
+- encoding 文件编码
+
+
+
+```python
+# hello.txt
+hello world
+
+# 只读
+text_file = open('hello.txt', 'r', encoding='utf-8')
+text_file.read()
+# hello world
+
+# 覆盖写入
+text_file = open('hello.txt', 'w', encoding='utf-8')
+text_file.write('new content')
+# hello.txt new content
+
+# 追加写入
+text_file = open('hello.txt', 'a', encoding='utf-8')
+text_file.write(' new content')
+# hello.txt hello world new content
+
+```
+
+使用`with`语句自动关闭文件流，在with结构里声明的变量，在外面可以访问到
+
+```py
+with open('hello.txt', 'r', encoding='utf-8') as file:
+  file.read()
+```
+
+
+
+# 创建和写入文件
+
+检查文件是否存在
+
+```python
+os.path.exists(file_path)
+```
+
+默认的读取模式对于不存在的文件会报错
+
+```python
+open(not_exists_path, 'r')
+# FileNotFoundError
+```
+
+改成`w`写入模式就可以访问不存在的文件。以`w`模式打开一个文件的话，如果文件不存在会创建这个文件。可以用`w`模式来创建一个文件
+
+```python
+with open(not_exists_path, 'w', encoding='utf8') as file:
+  	# 即使不调用write也会创建出这个文件
+    # w模式下不能调用readline等读取流方法
+    file.write('你好')
+
+with open(not_exists_path, 'r', encoding='utf8') as file:
+    print(file.readline())
+    # 你好
+```
+
+
+
 ## os模块
 
 ```python
@@ -159,47 +245,13 @@ shutil.move('C:\\bacon.txt', 'C:\\eggs')
 
 
 
-## open
-
-读取一个文件，参数：文件路径，模式，可选参数：encoding(编码)。模式：r只读，w写入(覆盖)，a写入(追加)。r=read,w=write,a=append。使用后要记得调用close()关闭文件流。以写入模式打开的文件，不存在时会自动创建
-
-```python
-# hello.txt
-hello world
-
-# 只读
-text_file = open('hello.txt', 'r', encoding='utf-8')
-text_file.read()
-# hello world
-
-# 覆盖写入
-text_file = open('hello.txt', 'w', encoding='utf-8')
-text_file.write('new content')
-# hello.txt new content
-
-# 追加写入
-text_file = open('hello.txt', 'a', encoding='utf-8')
-text_file.write(' new content')
-# hello.txt hello world new content
-
-```
-
-使用with语句自动关闭文件流，在with结构里声明的变量，在外面可以访问到
-
-```py
-with open('hello.txt', 'r', encoding='utf-8') as file:
-  file.read()
-```
-
-
-
 # http
 
 
 
 
 
-# 数据类型
+# 基础数据类型
 ## 数组list
 ```python
 arr = [1, 2, 3]
@@ -315,13 +367,29 @@ arr = list(tup)
 
 ## 字典dict
 
-定义一个字典，字典的key可以用字符串或数字类型
+定义一个字典，
+
+字典的key仅支持两种数据类型：
+
+- 字符串
+- 数字
 
 ```py
-dict = {'name': '张三', 1: 12}
+dict = {
+  'name': '张三', 
+  1: 12
+}
+
+```
+
+访问字典，仅支持[]语法
+
+```python
 name = dict['name']
 age = dict[1]
 ```
+
+查找元素
 
 用`in`和`not in`判断键名或值在不在字典中，访问不存在的键名时会抛出错误
 
@@ -657,9 +725,45 @@ linux
 
 
 
+# 其他
+
+## 脚本所在的目录
+
+```python
+sys.path[0]
+```
+
+# 抓取图片并保存
+
+```py
+res = requests.get('www.img.com/sun.png')
+# img/sun.png提前可以不存在
+# w:写入,b:二进制模式
+with open('img/sun.png', 'wb') as file:
+  file.write(res.content)
+```
 
 
 
+# request
+
+```python
+import requests
+```
 
 
+
+```python
+res = requests.get(url)
+# <Response [200]>
+```
+
+Response:
+
+- text 纯文本
+- content 二进制，类型是字节<class 'bytes'>
+- status_code 状态码，200、404、500
+- headers 返回头
+- json() 尝试将文本转换成字典dict
+- url 请求地址
 

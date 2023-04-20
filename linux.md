@@ -86,3 +86,33 @@ apt-get install git
 # ssh
 
 查看ssh服务状态
+
+
+
+# redis
+
+安装redis步骤
+
+> [Install Redis on Windows | Redis](https://redis.io/docs/getting-started/installation/install-redis-on-windows/)
+
+开启redis服务
+
+```sh
+sudo service redis-server start
+```
+
+查看redis服务状态
+
+```sh
+sudo service redis-server status
+```
+
+redis-cli
+
+```sh
+redis-cli 
+127.0.0.1:6379> ping
+PONG
+127.0.0.1:6379> quit
+```
+

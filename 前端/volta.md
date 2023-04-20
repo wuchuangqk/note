@@ -72,11 +72,11 @@ volta list all
 使用pin命令为项目指定node和npm的版本，volta会把版本信息写进package.json
 
 ```sh
-volta pin node@16.17.0
+volta pin node@18.15.0
 ```
 
 ```sh
-volta pin npm@8.15.0
+volta pin npm@9.5.0
 ```
 
 
@@ -85,10 +85,10 @@ package.json
 
 ```json
 "volta": {
-  "node": "16.17.0",
-  "npm": "8.15.0"
+  "node": "18.15.0",
+  "npm": "9.5.0"
 }
 ```
 
-此时，在项目路径下查看node版本是v16.17.0，而在其他地方查看node版本是v12.22.12
+此时，在项目路径下查看node版本是v18.15.0，而在其他地方查看node版本是v12.22.12
 
