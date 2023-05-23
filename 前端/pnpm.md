@@ -1,7 +1,17 @@
-`performant npm `，高性能的npm
+# pnpm是什么
+
+`Performant npm `，即高性能的npm
+
+和npm相比
 
 - 速度快
 - 依赖不会每创建一个项目就下载一次（节省空间）
+
+
+
+# 官网
+
+[Fast, disk space efficient package manager | pnpm](https://pnpm.io/zh/)
 
 # 安装
 
@@ -13,13 +23,8 @@ npm install -g pnpm
 
 ```shell
 pnpm -v
-# 7.5.0
+# 8.3.1
 ```
-
-node版本兼容
-
-- pnpm6：node12+
-- pnpm7：node14+
 
 # 常用命令
 
@@ -27,6 +32,7 @@ node版本兼容
 --- | --- | ---
 pnpm i | 安装所有依赖 | npm i
 pnpm add <pkg> | 安装指定依赖 | npm i <pkg>
+pnpm add <pkg> -D | 安装到开发依赖 | npm i <pkg> -D 
 pnpm <cmd> | 执行脚本 | npm run <cmd>
 
 # monorepo

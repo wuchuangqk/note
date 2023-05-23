@@ -742,8 +742,100 @@ res = requests.get('www.img.com/sun.png')
 with open('img/sun.png', 'wb') as file:
   file.write(res.content)
 ```
+# 从网络流中抓取图片
 
+导入库
+```python
+import requests, sys, os
+```
+- 网络请求库`request`
+- 操作系统`os`
 
+图片地址
+```http
+img_web_url = 'https://pic.leetcode-cn.com/1599880866-aLaPYz-Picture1.png'
+```
+
+## 发起请求
+```python
+res = requests.get(img_web_url)
+print(res.content)
+print(res.status_code)
+print(res.headers)
+print(res.url)
+```
+- content 二进制文件内容数据
+```html
+e7i\xc0\xe1SO=5\xe8\x1e\x96\x18\xb4\x94\xa9fx\xd2\xe7\x96\xb2\xa5\x94\xa9\xa7q`\xf4\x1e\xd2\x0c@\xf5\x05\xd5\x9a\xf2Z\x9b\xe23T\xbf\x1fa\xd1\xf1\x14,T\x17\x9b\x
+```
+- status_code 状态码
+```html
+200
+```
+- headers 返回的头部信息
+```html
+{'Last-Modified': 'Sat, 12 Sep 2020 03:21:07 GMT', 'Etag': '"39DFF6DAEF81694DA66E26432133428E"', 'Server': 'AliyunOSS', 'Date': 'Sat, 20 May 2023 13:15:12 GMT', 'Content-Type': 'image/png', 'x-oss-request-id': '6468C7E02D1F293432D90D15', 'x-oss-object-type': 'Normal', 'x-oss-hash-crc64ecma': '7161063256739480774', 'x-oss-storage-class': 'Standard', 'Content-MD5': 'Od/22u+BaU2mbiZDITNCjg==', 'x-oss-server-time': '72', 'Content-Length': '77907', 'Accept-Ranges': 'bytes', 'X-NWS-LOG-UUID': '7436313969761764876', 'Connection': 'keep-alive', 'X-Cache-Lookup': 'Cache Hit', 'Cache-Control': 'max-age=3600'}
+```
+- url 请求地址
+```html
+https://pic.leetcode-cn.com/1599880866-aLaPYz-Picture1.png
+```
+
+## 写入到本地
+设置保存地址，相对路径或绝对路径。目录如果不存在会自动创建，同名文件自动覆盖。
+```python
+# 绝对地址(D:\Programming\WorkSpace\python project\img\test.png)
+save_path = os.path.join(sys.path[0], 'img/test.png')
+# 相对路径
+save_path = 'img/test.png'
+```
+使用文件流写入
+```python
+with open(save_path, 'wb') as file:
+  file.write(res.content)
+  print('ok')
+```
+- wb `w(write)写入` + `b(byte)二进制`指定文件流模式是写入二进制数据
+- res.content 图片的二进制数据流
+
+在文件管理器打开图片所在目录
+```python
+# 图片目录
+file_path = os.path.join(sys.path[0], 'img')
+# 图片
+file_path = os.path.join(sys.path[0], 'img/test.png')
+os.startfile(file_path)
+```
+- 对于目录：在文件管理器打开目录
+- 对于文件：用默认程序打开文件
+
+# 获取脚本所在目录
+
+python获取脚本所在目录有两种常用方式：
+- os.getcwd() 获取当前工作目录
+- sys.path[0] 
+
+以这个脚本为例，比较两种方法的区别
+`D:\Programming\WorkSpace\python project\test.py`
+```python
+import sys, os
+
+print('os.getcwd()——%s' % (os.getcwd()))
+print('sys.path[0]——%s' % (sys.path[0]))
+```
+
+- 当在`D:\Programming\WorkSpace\python project`目录执行脚本时，两种方法获取到了一样的结果
+```html
+os.getcwd()——D:\Programming\WorkSpace\python project
+sys.path[0]——d:\Programming\WorkSpace\python project
+```
+- 当在`C:\Users\wuchu`目录执行脚本时
+	- os.getcwd() 返回的是执行脚本所在的目录，而非脚本真实目录
+	- sys.path[0] 返回了脚本的真实目录
+```html
+os.getcwd()——C:\Users\wuchu
+sys.path[0]——D:\Programming\WorkSpace\python project
+```
 
 # request
 
