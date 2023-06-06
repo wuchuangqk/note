@@ -245,13 +245,9 @@ shutil.move('C:\\bacon.txt', 'C:\\eggs')
 
 
 
-# http
 
 
-
-
-
-# 基础数据类型
+# 数据类型
 ## 数组list
 ```python
 arr = [1, 2, 3]
@@ -554,48 +550,51 @@ arr2.append(4)
 
 ## json
 
-```py
+json标准库提供了对json文件读写操作的支持。
+
+导入json库
+```python
 import json
 ```
 
-读取json文件，返回字典或列表（对应json的两种格式，{ }和[ ]）
+### 读取json
 
 ```python
-data = json.load(file)
+# 指定encoding为utf-8防止出现中文乱码
+with open('settings.json', 'r', encoding='utf-8') as file:
+    data = json.load(file)
 ```
+1、生成文件流（注意处理文件不存在异常）
+2、json.load()加载文件流并解析
+3、返回解析结果
 
-```py
-# obj.json
-{
-  "name": "张三"
-}
-# arr.json
-[
-  {
-    "name": "张三"
-  }
-]
-import json, os
+解析结果有两种数据类型，字典或列表。根据json定义的格式：
+- 数组对应列表
+- 对象对应字典
 
-base = os.getcwd()
-for name in os.listdir():
-    if name.endswith('.json'):
-        with open(os.path.join(base, name), 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            print(data, type(data))
-            
+示例
+```python
+data = json.load(file)
+print(data, type(data))
+
 # {'name': '张三'} <class 'dict'>
 # [{'name': '张三'}] <class 'list'>
 ```
 
-把json写入进文件，json.dump()，设置indent参数会自动格式化写入后的样式
+### 写入(修改)json
 
-```py
+使用json.dump()将字典或列表里的数据写入json文件。每次写入都是全局覆盖写入，无法做到只修改某一部分。
+```python
 dict = {'age': 12}
-with open('age.json', 'w') as f:
-    json.dump(dict, f, indent=2)
+with open('settings.json', 'w', encoding='utf-8') as file:
+	 json.dump(dict, f)
 ```
 
+默认情况下，写入后的json文件会挤在一行，设置indent参数可以设置缩进，美化json样式
+```python
+json.dump(dict, f, indent=2)
+```
+- index=2 缩进两个空格
 
 
 ## zipfile
@@ -653,14 +652,44 @@ zip.close()
 import time
 ```
 
-获取代码执行用时
-
+### 代码执行用时
 ```python
 start_time = time.time()
 end_time = time.time()
 print('程序用时%s秒' % (round(end_time - start_time, 2)))
 ```
 
+### 当前时间戳
+返回自1970年1月1日午夜以来的秒数。
+```python
+time.time()
+# 1684825513.1463313
+```
+
+### 年月日时分秒
+```python
+time_info = time.localtime()
+# time.struct_time(tm_year=2023, tm_mon=5, tm_mday=23, tm_hour=15, tm_min=6, tm_sec=55, tm_wday=1, tm_yday=143, tm_isdst=0)
+```
+- tm_year 年
+- tm_mon 月
+- tm_mday 日
+- tm_hour 时
+- tm_min 分
+- tm_sec 秒
+- tm_wday 星期几（取值范围为0-6，星期一到星期日）
+- tm_yday 表示一年中的第几天，取值范围为1-366。
+- tm_isdst 表示是否为夏令时，其取值有三种情况：
+	-   如果为正数，则表示当前时间处于夏令时。
+	-   如果为0，则表示当前时间不处于夏令时。
+	-   如果为负数，则表示当前时间夏令时状态未知。
+
+### 日期格式化
+```python
+localtime = time.localtime()
+formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", localtime)
+# 2023-05-23 15:13:54
+```
 
 
 # pip
@@ -723,25 +752,6 @@ linux
 
 
 
-
-
-# 其他
-
-## 脚本所在的目录
-
-```python
-sys.path[0]
-```
-
-# 抓取图片并保存
-
-```py
-res = requests.get('www.img.com/sun.png')
-# img/sun.png提前可以不存在
-# w:写入,b:二进制模式
-with open('img/sun.png', 'wb') as file:
-  file.write(res.content)
-```
 # 从网络流中抓取图片
 
 导入库
@@ -784,7 +794,7 @@ https://pic.leetcode-cn.com/1599880866-aLaPYz-Picture1.png
 ## 写入到本地
 设置保存地址，相对路径或绝对路径。目录如果不存在会自动创建，同名文件自动覆盖。
 ```python
-# 绝对地址(D:\Programming\WorkSpace\python project\img\test.png)
+# 绝对路径(D:\Programming\WorkSpace\python project\img\test.png)
 save_path = os.path.join(sys.path[0], 'img/test.png')
 # 相对路径
 save_path = 'img/test.png'
@@ -809,7 +819,7 @@ os.startfile(file_path)
 - 对于目录：在文件管理器打开目录
 - 对于文件：用默认程序打开文件
 
-# 获取脚本所在目录
+# 脚本所在目录
 
 python获取脚本所在目录有两种常用方式：
 - os.getcwd() 获取当前工作目录
@@ -837,7 +847,8 @@ os.getcwd()——C:\Users\wuchu
 sys.path[0]——D:\Programming\WorkSpace\python project
 ```
 
-# request
+# 网络请求
+request
 
 ```python
 import requests
@@ -859,3 +870,4 @@ Response:
 - json() 尝试将文本转换成字典dict
 - url 请求地址
 
+# 面向对象
