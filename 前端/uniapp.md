@@ -116,3 +116,17 @@ uni.$emit('test', 'dfsdfsdf')
 uni.hideTabbar()
 ```
 
+
+
+# uniapp和vue组件生命周期执行顺序
+
+1.onLoad						页面获取路由参数	*uni*
+2.onShow					   页面显示	*uni*
+3.beforeCreate			  组件即将初始化数据（data里的变量此时访问是undefined）	*vue*
+4.created						组件数据初始化完成	*vue*
+5.beforeMount			  组件即将渲染DOM结构（此时不能用ref）	*vue*
+6.mounted					 组件渲染DOM结构完成（在这里操作DOM）	*vue*
+7.onReady					  页面渲染DOM结构完成	*uni*
+8.onUnload					页面先行卸载	*uni*
+9.beforeDestroy		    组件即将卸载	*vue*
+10.destroyed				  组件卸载完成	*vue*

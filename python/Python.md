@@ -363,12 +363,7 @@ arr = list(tup)
 
 ## 字典dict
 
-定义一个字典，
-
-字典的key仅支持两种数据类型：
-
-- 字符串
-- 数字
+字典是键值对
 
 ```py
 dict = {
@@ -378,7 +373,12 @@ dict = {
 
 ```
 
-访问字典，仅支持[]语法
+字典的key仅支持两种数据类型：
+
+- 字符串
+- 数字
+
+访问字典，只能通过[]语法来访问
 
 ```python
 name = dict['name']
@@ -752,74 +752,7 @@ linux
 
 
 
-# 从网络流中抓取图片
-
-导入库
-```python
-import requests, sys, os
-```
-- 网络请求库`request`
-- 操作系统`os`
-
-图片地址
-```http
-img_web_url = 'https://pic.leetcode-cn.com/1599880866-aLaPYz-Picture1.png'
-```
-
-## 发起请求
-```python
-res = requests.get(img_web_url)
-print(res.content)
-print(res.status_code)
-print(res.headers)
-print(res.url)
-```
-- content 二进制文件内容数据
-```html
-e7i\xc0\xe1SO=5\xe8\x1e\x96\x18\xb4\x94\xa9fx\xd2\xe7\x96\xb2\xa5\x94\xa9\xa7q`\xf4\x1e\xd2\x0c@\xf5\x05\xd5\x9a\xf2Z\x9b\xe23T\xbf\x1fa\xd1\xf1\x14,T\x17\x9b\x
-```
-- status_code 状态码
-```html
-200
-```
-- headers 返回的头部信息
-```html
-{'Last-Modified': 'Sat, 12 Sep 2020 03:21:07 GMT', 'Etag': '"39DFF6DAEF81694DA66E26432133428E"', 'Server': 'AliyunOSS', 'Date': 'Sat, 20 May 2023 13:15:12 GMT', 'Content-Type': 'image/png', 'x-oss-request-id': '6468C7E02D1F293432D90D15', 'x-oss-object-type': 'Normal', 'x-oss-hash-crc64ecma': '7161063256739480774', 'x-oss-storage-class': 'Standard', 'Content-MD5': 'Od/22u+BaU2mbiZDITNCjg==', 'x-oss-server-time': '72', 'Content-Length': '77907', 'Accept-Ranges': 'bytes', 'X-NWS-LOG-UUID': '7436313969761764876', 'Connection': 'keep-alive', 'X-Cache-Lookup': 'Cache Hit', 'Cache-Control': 'max-age=3600'}
-```
-- url 请求地址
-```html
-https://pic.leetcode-cn.com/1599880866-aLaPYz-Picture1.png
-```
-
-## 写入到本地
-设置保存地址，相对路径或绝对路径。目录如果不存在会自动创建，同名文件自动覆盖。
-```python
-# 绝对路径(D:\Programming\WorkSpace\python project\img\test.png)
-save_path = os.path.join(sys.path[0], 'img/test.png')
-# 相对路径
-save_path = 'img/test.png'
-```
-使用文件流写入
-```python
-with open(save_path, 'wb') as file:
-  file.write(res.content)
-  print('ok')
-```
-- wb `w(write)写入` + `b(byte)二进制`指定文件流模式是写入二进制数据
-- res.content 图片的二进制数据流
-
-在文件管理器打开图片所在目录
-```python
-# 图片目录
-file_path = os.path.join(sys.path[0], 'img')
-# 图片
-file_path = os.path.join(sys.path[0], 'img/test.png')
-os.startfile(file_path)
-```
-- 对于目录：在文件管理器打开目录
-- 对于文件：用默认程序打开文件
-
-# 脚本所在目录
+# 获取当前目录的方式
 
 python获取脚本所在目录有两种常用方式：
 - os.getcwd() 获取当前工作目录
@@ -854,8 +787,6 @@ request
 import requests
 ```
 
-
-
 ```python
 res = requests.get(url)
 # <Response [200]>
@@ -863,11 +794,98 @@ res = requests.get(url)
 
 Response:
 
-- text 纯文本
-- content 二进制，类型是字节<class 'bytes'>
-- status_code 状态码，200、404、500
-- headers 返回头
-- json() 尝试将文本转换成字典dict
-- url 请求地址
+- 属性
 
-# 面向对象
+  - text 纯文本
+
+  - content 二进制，类型是字节<class 'bytes'>
+
+  - status_code 状态码，200、404、500
+
+  - headers 返回头
+
+  - url 请求地址
+
+- 方法
+  - json() 尝试将文本转换成字典dict
+
+# \__pycache__ 是什么
+
+第一次执行代码的时候，Python解释器已经把编译的字节码放在`__pycache__`文件夹中，这样以后再次运行的话，如果被调用的模块未发生改变，那就直接跳过编译这一步，直接去`__pycache__`文件夹中去运行相关的 *.pyc 文件，大大缩短了项目运行前的准备时间。
+
+
+
+# 列表推导[i for i in range(5)]
+
+```python
+nums = [i for i in range(5)]
+print(nums)
+# [0, 1, 2, 3, 4]
+```
+
+等价于：
+```python
+nums = []
+for i in range(5):
+    nums.append(i)
+```
+
+
+
+# 类和对象
+
+```python
+class Dog():
+  
+  # 构造函数
+  def __init__(self, name):
+    # 初始化属性
+    self.name = name
+    
+  def sit(self):
+    print('sit')
+```
+
+- 类名首字母大写，后面跟一对*括号*
+- \__init__是python约定的构造函数名称
+- 每个方法的第一个参数都是self，即其他语言中的this
+
+
+
+```python
+dog1 = Dog('兰兰')
+print(dog1.name)
+# 兰兰
+dog1.sit()
+# sit
+```
+
+- python创建对象不需要new
+- 调用方法时，第一个参数self由python自动传入
+
+# 多线程
+
+```python
+import threading
+```
+
+`threading.Thread` 是 Python 中用于创建线程的类，可以通过创建 `Thread` 类的实例来创建一个新的线程，从而实现多线程编程。`Thread` 类的构造函数如下：
+
+```python
+Thread(group=None, target=None, name=None, args=(), kwargs={}, *, daemon=None)
+```
+
+其中，`group` 参数用于指定线程所属的线程组，一般不需要设置；`target` 参数用于指定线程要执行的目标函数；`name` 参数用于指定线程的名称，如果不指定，则会自动生成一个唯一的名称；`args` 参数用于指定目标函数的位置参数，以元组的形式传递；`kwargs` 参数用于指定目标函数的关键字参数，以字典的形式传递；`daemon` 参数用于指定线程是否为守护线程，如果为 True，则该线程会在主线程结束时自动结束。
+
+以下是一个简单的例子，演示了如何使用 `Thread` 类创建一个新的线程：
+
+```python
+import threading
+
+def print_numbers():
+    for i in range(10):
+        print(i)
+
+t = threading.Thread(target=print_numbers)
+t.start()
+```
